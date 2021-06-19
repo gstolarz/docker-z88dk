@@ -1,0 +1,57 @@
+diff -ur z88dk-orig/src/ticks/Makefile z88dk/src/ticks/Makefile
+--- z88dk-orig/src/ticks/Makefile	2020-10-05 14:57:14.948477663 +0200
++++ z88dk/src/ticks/Makefile	2020-10-05 14:57:14.948477663 +0200
+@@ -18,7 +18,7 @@
+ INSTALL ?= install
+ 
+ CFLAGS += -I../../ext/uthash/src/ -g -MMD $(UNIXem_CFLAGS)
+-LDFLAGS = -lm
++LDFLAGS += -lm
+ 
+ all: z88dk-ticks$(EXESUFFIX) z88dk-dis$(EXESUFFIX)
+ 
+@@ -26,7 +26,7 @@
+ 	$(CC) -o $@ $(CFLAGS) $(OBJS) $(LDFLAGS)
+ 
+ z88dk-dis$(EXESUFFIX):	$(DISOBJS)
+-	$(CC) -o $@ $(CFLAGS) $(DISOBJS)
++	$(CC) -o $@ $(CFLAGS) $(DISOBJS) $(LDFLAGS)
+ 
+ install: z88dk-ticks$(EXESUFFIX) z88dk-dis$(EXESUFFIX)
+ 	$(INSTALL) z88dk-ticks$(EXESUFFIX) $(PREFIX)/bin/z88dk-ticks$(EXESUFFIX)
+diff -ur z88dk-orig/src/z80nm/Makefile z88dk/src/z80nm/Makefile
+--- z88dk-orig/src/z80nm/Makefile	2020-10-05 14:57:15.080481359 +0200
++++ z88dk/src/z80nm/Makefile	2020-10-05 14:57:15.080481359 +0200
+@@ -43,7 +43,7 @@
+ all: z88dk-z80nm$(EXESUFFIX)
+ 
+ z88dk-z80nm$(EXESUFFIX):	$(OBJS)
+-	$(CC) -o z88dk-z80nm$(EXESUFFIX) $(CFLAGS) $(OBJS)
++	$(CC) -o z88dk-z80nm$(EXESUFFIX) $(CFLAGS) $(OBJS) $(LDFLAGS)
+ 
+ install:  z88dk-z80nm$(EXESUFFIX)
+ 	$(INSTALL) z88dk-z80nm$(EXESUFFIX) $(PREFIX)/bin/z88dk-z80nm$(EXESUFFIX)
+diff -ur z88dk-orig/src/zcc/Makefile z88dk/src/zcc/Makefile
+--- z88dk-orig/src/zcc/Makefile	2020-10-05 14:57:15.080481359 +0200
++++ z88dk/src/zcc/Makefile	2020-10-05 14:57:15.080481359 +0200
+@@ -20,7 +20,7 @@
+ all: zcc$(EXESUFFIX)
+ 
+ zcc$(EXESUFFIX):	$(OBJS)
+-	$(CC) -o zcc$(EXESUFFIX) $(CFLAGS) $(OBJS)
++	$(CC) -o zcc$(EXESUFFIX) $(CFLAGS) $(OBJS) $(LDFLAGS)
+ 
+ %.o: %.c
+ 	$(CC) -c -o $@ $(CFLAGS) $(INCLUDES) $^
+diff -ur z88dk-orig/support/graphics/Makefile z88dk/support/graphics/Makefile
+--- z88dk-orig/support/graphics/Makefile	2020-10-05 14:57:15.092481694 +0200
++++ z88dk/support/graphics/Makefile	2020-10-05 14:57:15.092481694 +0200
+@@ -19,7 +19,7 @@
+ all: z88dk-z80svg$(EXESUFFIX)
+ 
+ z88dk-z80svg$(EXESUFFIX):	$(OBJS)
+-	$(CC) -o z88dk-z80svg$(EXESUFFIX) $(CFLAGS) $(OBJS) $(LIBS)
++	$(CC) -o z88dk-z80svg$(EXESUFFIX) $(CFLAGS) $(OBJS) $(LIBS) $(LDFLAGS)
+ 
+ install: z88dk-z80svg$(EXESUFFIX)
+ 	$(INSTALL) z88dk-z80svg$(EXESUFFIX) $(PREFIX)/bin/z88dk-z80svg$(EXESUFFIX)

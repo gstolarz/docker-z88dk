@@ -1,0 +1,25 @@
+FROM alpine:3.13 AS build
+
+RUN apk add --update --no-cache \
+    bison boost-dev curl flex g++ libxml2-dev m4 make musl-dev patch wget
+
+WORKDIR /usr/src
+COPY z88dk.patch .
+
+ARG Z88DK_VERSION=2.1
+
+RUN wget https://github.com/z88dk/z88dk/releases/download/v${Z88DK_VERSION}/z88dk-src-${Z88DK_VERSION}.tgz \
+  && tar xfz z88dk-src-${Z88DK_VERSION}.tgz \
+  && patch -p0 < z88dk.patch \
+  && cd z88dk \
+  && BUILD_SDCC="1" BUILD_SDCC_HTTP="1" LDFLAGS="-s" ./build.sh -i /opt/z88dk \
+  && make install DESTDIR=/opt/z88dk \
+  && find /opt/z88dk/share -type f -exec chmod -x {} \;
+
+FROM alpine:3.13
+
+RUN apk add --update --no-cache libstdc++ m4 make
+
+COPY --from=build /opt/z88dk /opt/z88dk
+ENV PATH /opt/z88dk/bin:$PATH
+WORKDIR /workdir
