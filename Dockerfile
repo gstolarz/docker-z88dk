@@ -26,4 +26,5 @@ RUN apt-get update \
 
 COPY --from=build /opt/z88dk /opt/z88dk
 ENV PATH /opt/z88dk/bin:$PATH
+ENV ZCCCFG /opt/z88dk/share/z88dk/lib/config/
 WORKDIR /workdir
